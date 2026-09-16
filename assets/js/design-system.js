@@ -2831,7 +2831,7 @@ function ThesisScreen() {
     },
     feedback: {
       title: 'Operating knowledge as an edge',
-      body: 'Plutus21 Partners works inside companies implementing AI, building global teams, modernising systems and running go-to-market. That first-hand view of what implementation actually takes feeds back into how Capital underwrites it.',
+      body: 'Plutus21 Partners works inside companies implementing AI, building global teams, modernizing systems and running go-to-market. That first-hand view of what implementation actually takes feeds back into how Capital underwrites it.',
       points: ['Partners informs implementation risk', 'Capital informs enterprise-value thinking', 'One research engine serving both']
     }
   };
@@ -3289,7 +3289,7 @@ function HomeScreen({
     title: "Data Sovereignty",
     blurb: "If AI labs own your workflows, what's left for you to own?"
   }))), /*#__PURE__*/React.createElement(Section, null, /*#__PURE__*/React.createElement(SectionHeading, {
-    eyebrow: "The organisation",
+    eyebrow: "The organization",
     title: "Two established businesses, one research engine",
     description: "Capital studies how disruption changes markets. Partners helps companies respond to it. Academy will teach it."
   }), /*#__PURE__*/React.createElement("div", {
@@ -4218,7 +4218,7 @@ function CaseStudyScreen() {
     safety: {
       tag: 'PE-backed safety & compliance platform',
       title: 'Three continents, four operating phases, three years',
-      lede: 'A private-equity-backed safety and compliance business needed engineering capacity, then integration capability, then a commercial organisation — in that order.',
+      lede: 'A private-equity-backed safety and compliance business needed engineering capacity, then integration capability, then a commercial organization — in that order.',
       stats: [{
         value: '4 → 80',
         label: 'Engineering team'
@@ -4235,7 +4235,7 @@ function CaseStudyScreen() {
       }],
       phases: [{
         t: 'Phase 1 — Engineering capacity',
-        b: 'Stand up a delivery organisation against a product roadmap the internal team could not absorb.'
+        b: 'Stand up a delivery organization against a product roadmap the internal team could not absorb.'
       }, {
         t: 'Phase 2 — Regional expansion',
         b: 'Expand into Asia, Africa and LATAM based on the company\u2019s talent, integration and time-zone requirements.'
@@ -4249,8 +4249,8 @@ function CaseStudyScreen() {
     },
     transport: {
       tag: 'Secure executive transportation, ~$80M revenue',
-      title: 'Stabilise engineering, then modernise the whole stack',
-      lede: 'A secure executive transportation business growing 25–30% annually needed its technology organisation assessed and rebuilt over an 18-month engagement.',
+      title: 'Stabilize engineering, then modernize the whole stack',
+      lede: 'A secure executive transportation business growing 25–30% annually needed its technology organization assessed and rebuilt over an 18-month engagement.',
       stats: [{
         value: '~$80M',
         label: 'Revenue'
@@ -4266,16 +4266,16 @@ function CaseStudyScreen() {
       }],
       phases: [{
         t: 'Assess',
-        b: 'Review the technology organisation, delivery practices and architecture.'
+        b: 'Review the technology organization, delivery practices and architecture.'
       }, {
-        t: 'Stabilise',
-        b: 'Stabilise engineering, introduce dedicated QA and establish weekly production deployments.'
+        t: 'Stabilize',
+        b: 'Stabilize engineering, introduce dedicated QA and establish weekly production deployments.'
       }, {
         t: 'Migrate',
         b: 'Move core workloads to AWS and rebuild the customer applications.'
       }, {
-        t: 'Modernise',
-        b: 'Modernise the underlying stack and add AI-enabled tooling.'
+        t: 'Modernize',
+        b: 'Modernize the underlying stack and add AI-enabled tooling.'
       }]
     }
   };
@@ -4600,7 +4600,7 @@ function PartnersHomeScreen({
   }, {
     icon: 'domain',
     t: 'PE-backed portfolio companies',
-    b: 'Integration after acquisition, technology modernisation, commercial build-out.'
+    b: 'Integration after acquisition, technology modernization, commercial build-out.'
   }, {
     icon: 'group_work',
     t: 'Middle-market management teams',
@@ -4632,7 +4632,7 @@ function PartnersHomeScreen({
   }, x.b))))), /*#__PURE__*/React.createElement(CTABand, {
     eyebrow: "Get in touch",
     title: "Whatever you are building, we can help structure and execute the work",
-    description: "Modernising technology, implementing AI, scaling teams, improving operations or strengthening commercial execution.",
+    description: "Modernizing technology, implementing AI, scaling teams, improving operations or strengthening commercial execution.",
     primary: "Talk to us",
     tone: "midnight"
   }));
@@ -4762,8 +4762,8 @@ window.P21P_CAPABILITIES = [{
   id: 'cap-tech',
   icon: 'code_blocks',
   title: 'Technology & Innovation',
-  description: 'Software engineering, product, data infrastructure, modernisation and integration.',
-  items: ['Software engineering', 'Product & data infrastructure', 'Modernisation', 'Integration', 'Blockchain']
+  description: 'Software engineering, product, data infrastructure, modernization and integration.',
+  items: ['Software engineering', 'Product & data infrastructure', 'Modernization', 'Integration', 'Blockchain']
 }, {
   id: 'cap-strategy',
   icon: 'insights',
@@ -4774,8 +4774,8 @@ window.P21P_CAPABILITIES = [{
   id: 'cap-people',
   icon: 'groups',
   title: 'People & Operations',
-  description: 'Organisation design, operating models, process improvement and team building.',
-  items: ['Organisation design', 'Operating models', 'Process improvement', 'Team building']
+  description: 'Organization design, operating models, process improvement and team building.',
+  items: ['Organization design', 'Operating models', 'Process improvement', 'Team building']
 }, {
   id: 'cap-change',
   icon: 'change_circle',
