@@ -12,7 +12,7 @@ Live: https://p21gtm.com
 | `index.html` | The site. Static HTML; the interactive sections hydrate with React. |
 | `assets/js/` | `dc-runtime.js`, the Plutus21 design system, and pinned React 18.3.1 + ReactDOM. |
 | `assets/fonts/` | Self-hosted woff2: Manrope, Public Sans, IBM Plex Mono, Newsreader, and a subset of Material Symbols Rounded. |
-| `assets/img/` | Logo and the orchestration-map still. |
+| `assets/img/` | The Plutus21 wordmark and the Clay logo used by the orchestration map. |
 | `orchestration-map/` | A separate standalone page — the GTM Orchestration Map diagram. |
 
 Everything is served from this repo. The page makes **no external requests** at
