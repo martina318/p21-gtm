@@ -1,38 +1,53 @@
 # p21-gtm
 
-**GTM Orchestration Map** — a single-page static site mapping the go-to-market
-pipeline from CRM sync through to a prioritised queue per rep.
+**Plutus21 — GTM engineering.** A static marketing site describing how Plutus21
+engineers the data, signals, orchestration and decision logic behind a GTM motion.
 
-## Contents
+Live: https://p21gtm.com
+
+## Layout
 
 | Path | Purpose |
 | --- | --- |
-| `index.html` | The entire site. Self-contained HTML + CSS, no JavaScript, no build step. |
-| `.nojekyll` | Tells GitHub Pages to serve files as-is instead of running Jekyll. |
+| `index.html` | The site. Static HTML; the interactive sections hydrate with React. |
+| `assets/js/` | `dc-runtime.js`, the Plutus21 design system, and pinned React 18.3.1 + ReactDOM. |
+| `assets/fonts/` | Self-hosted woff2: Manrope, Public Sans, IBM Plex Mono, Newsreader, and a subset of Material Symbols Rounded. |
+| `assets/img/` | Logo and the orchestration-map still. |
+| `orchestration-map/` | A separate standalone page — the GTM Orchestration Map diagram. |
+
+Everything is served from this repo. The page makes **no external requests** at
+runtime: no CDN, no font host, no analytics.
 
 ## Local preview
 
-Open the file directly:
-
-```sh
-open index.html
-```
-
-Or serve it over HTTP:
-
 ```sh
 python3 -m http.server 8000
-# then visit http://localhost:8000
+# http://localhost:8000
 ```
 
-## Stack
+Open `index.html` over `file://` and the React sections will not hydrate — use a
+server.
 
-- Static HTML with an inline `<style>` block — no framework, no bundler.
-- Type: Archivo + IBM Plex Mono, loaded from Google Fonts.
-- Responsive from 320px up; light and dark themes via `prefers-color-scheme`,
-  with a `data-theme` attribute override.
+## Build notes
 
-## Deployment
+The site was extracted from a single-file Claude Artifact bundle that carried its
+assets as base64 in a JSON manifest. Two things are worth knowing before editing:
 
-Served by GitHub Pages from the `main` branch. Any push to `main` republishes
-the site.
+- **The icon font is subset.** `material-symbols-subset.woff2` contains only the
+  48 glyphs the page uses, keyed by codepoint rather than by ligature, and is
+  5.8 KB instead of the original 5.2 MB. Icon markup uses the literal codepoint
+  character; `window.__P21_ICONS` in `index.html` maps names to those codepoints
+  for anything rendered through the design system's `Icon` component. **Adding a
+  new icon means re-subsetting the font** — the glyph will not be in the file.
+- **The navbar is responsive.** Below 860px it collapses to a hamburger drawer.
+  That logic lives in the `Navbar` component inside `assets/js/design-system.js`.
+
+## Mobile
+
+- The navbar collapses to a hamburger drawer under 860px, with Escape-to-close,
+  background scroll lock and 48px minimum tap targets.
+- Two decorative diagrams use fixed pixel coordinates and would otherwise widen
+  the document on narrow screens. They are scaled down and clipped at their
+  shared container. Note that `overflow-x: hidden` is deliberately **not** set on
+  `html` — doing so moves the scroll container to `<body>` and silently zeroes
+  `window.scrollY` for everything on the page.

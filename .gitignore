@@ -6,3 +6,7 @@ __pycache__/
 *.pyc
 .venv/
 venv/
+
+# Source artifact: the 9.4MB Claude Artifact bundle the site was extracted from.
+# Kept locally (also in ~/Documents); the built site in this repo is what ships.
+Aptum GTM Site.html
