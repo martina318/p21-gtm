@@ -1,0 +1,575 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GTM Orchestration Map</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&amp;family=IBM+Plex+Mono:wght@400;500;600&amp;display=swap">
+<style>
+:root{
+  --ground:#F4F5F3;--surface:#FFFFFF;--surface-2:#EBEDEA;
+  --ink:#191D1C;--ink-2:#4A524F;--ink-3:#7C8683;
+  --rule:#D6DAD6;--rule-soft:#E4E7E3;
+  --accent:#1B4F51;--accent-soft:#E2EBEA;
+  --gate:#A8502A;--gate-soft:#F7E9E1;
+  --ok:#2E6A4E;--ok-soft:#E3EFE8;--warn:#8A6410;--warn-soft:#F5EEDC;
+  --display:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  --shadow:0 1px 2px rgba(20,30,28,.05),0 6px 18px -8px rgba(20,30,28,.12);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --ground:#111514;--surface:#181D1C;--surface-2:#1F2523;--ink:#E8EDEB;--ink-2:#A7B2AE;--ink-3:#7A8682;
+  --rule:#2C3532;--rule-soft:#232B29;--accent:#6FB8B4;--accent-soft:#17302F;--gate:#E0885C;--gate-soft:#2E1F18;
+  --ok:#68B48C;--ok-soft:#15261D;--warn:#C9A24A;--warn-soft:#2A2416;--shadow:0 1px 2px rgba(0,0,0,.3),0 8px 20px -8px rgba(0,0,0,.5)}}
+:root[data-theme="dark"]{
+  --ground:#111514;--surface:#181D1C;--surface-2:#1F2523;--ink:#E8EDEB;--ink-2:#A7B2AE;--ink-3:#7A8682;
+  --rule:#2C3532;--rule-soft:#232B29;--accent:#6FB8B4;--accent-soft:#17302F;--gate:#E0885C;--gate-soft:#2E1F18;
+  --ok:#68B48C;--ok-soft:#15261D;--warn:#C9A24A;--warn-soft:#2A2416;--shadow:0 1px 2px rgba(0,0,0,.3),0 8px 20px -8px rgba(0,0,0,.5)}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--display);font-size:14px;line-height:1.4;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1040px;margin:0 auto;padding-inline:20px;padding-block:0}
+h1,h2,h3,h4{margin:0;text-wrap:balance}
+
+/* masthead */
+.mast{text-align:center;padding-block:56px 30px}
+.mast h1{font-size:clamp(30px,5.4vw,46px);font-weight:700;letter-spacing:-0.03em;line-height:1.05}
+.mast p{font-family:var(--mono);font-size:11.5px;color:var(--ink-3);margin:12px 0 0;letter-spacing:0.04em}
+.key{display:flex;flex-wrap:wrap;justify-content:center;gap:8px 22px;margin-top:22px;font-family:var(--mono);font-size:10.5px;color:var(--ink-3)}
+.key i{display:inline-block;width:12px;height:12px;border-radius:3px;vertical-align:-2px;margin-right:6px;border:1px solid var(--rule);background:var(--surface)}
+.key i.g{background:var(--gate-soft);border-color:var(--gate)}
+.key i.l{background:transparent;border:1px dashed var(--gate)}
+.key i.ng{background:var(--warn-soft);border-color:var(--warn)}
+
+/* section */
+.sec{padding-block:26px 6px}
+.sec-h{text-align:center;margin-bottom:22px}
+.sec-h .k{font-family:var(--mono);font-size:10.5px;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink-3)}
+.sec-h h2{font-size:22px;font-weight:600;letter-spacing:-0.015em;margin-top:4px}
+
+/* node */
+.flow{display:flex;flex-direction:column;align-items:center}
+.n{background:var(--surface);border:1px solid var(--rule);border-radius:10px;box-shadow:var(--shadow);padding:13px 18px;text-align:center;min-width:220px;max-width:360px}
+.n .k{display:block;font-family:var(--mono);font-size:9.5px;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-3);margin-bottom:4px}
+.n h3{font-size:14.5px;font-weight:600;letter-spacing:-0.01em;line-height:1.25}
+.n .s{display:block;font-family:var(--mono);font-size:10.5px;color:var(--ink-3);margin-top:5px;line-height:1.5}
+.n.g{background:var(--gate-soft);border-color:var(--gate);border-width:1.5px}
+.n.g .k{color:var(--gate)}
+.n.wide{max-width:none;width:100%}
+.n.term{background:var(--ink);border-color:var(--ink)}
+.n.term h3,.n.term .s{color:var(--ground)}
+
+.chips{display:flex;flex-wrap:wrap;justify-content:center;gap:5px;margin-top:9px}
+.c{font-family:var(--mono);font-size:10px;line-height:1.3;padding:3px 8px;border-radius:14px;border:1px solid var(--rule);background:var(--surface);color:var(--ink-2);white-space:nowrap}
+.c::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--accent);margin-right:6px;vertical-align:1px;opacity:.75}
+.c.t1{background:var(--accent);border-color:var(--accent);color:var(--ground)}.c.t1::before{background:var(--ground)}
+.c.t2{border-color:var(--accent);color:var(--accent)}
+.c.t3{color:var(--ink-3)}.c.t3::before{background:var(--ink-3)}
+.c.x::before{display:none}
+
+/* arrows */
+.a{position:relative;height:34px;width:1px;background:var(--ink-3);margin:0 auto}
+.a::after{content:"";position:absolute;bottom:-1px;left:50%;transform:translateX(-4px);border-left:4px solid transparent;border-right:4px solid transparent;border-top:6px solid var(--ink-3)}
+.a.lbl{width:auto;background:none;display:flex;align-items:center;justify-content:center;height:40px}
+.a.lbl::before{content:"";position:absolute;top:0;bottom:0;left:50%;width:1px;background:var(--ink-3)}
+.a.lbl::after{left:50%}
+.a.lbl span{position:relative;z-index:1;background:var(--ground);padding:0 9px;font-family:var(--mono);font-size:10px;color:var(--ink-3)}
+
+/* parallel row with fork/merge */
+.row{display:grid;gap:14px;width:100%;max-width:820px;position:relative;padding-top:22px;padding-bottom:22px}
+.row.two{grid-template-columns:1fr 1fr}.row.three{grid-template-columns:repeat(3,1fr)}.row.four{grid-template-columns:repeat(4,1fr)}.row.six{grid-template-columns:repeat(6,1fr)}
+.row::before,.row::after{content:"";position:absolute;left:16.6%;right:16.6%;height:1px;background:var(--ink-3)}
+.row.two::before,.row.two::after{left:25%;right:25%}
+.row.four::before,.row.four::after{left:12.5%;right:12.5%}
+.row.six::before,.row.six::after{left:8.3%;right:8.3%}
+.row::before{top:0}.row::after{bottom:0}
+.row>.n{min-width:0;max-width:none;position:relative}
+.row>.n::before,.row>.n::after{content:"";position:absolute;left:50%;width:1px;background:var(--ink-3)}
+.row>.n::before{top:-22px;height:22px}
+.row>.n::after{bottom:-22px;height:22px}
+.row.noend::after{display:none}.row.noend>.n::after{display:none}
+.stem{width:1px;height:22px;background:var(--ink-3);margin:0 auto}
+
+/* panel of cards */
+.p{width:100%;background:var(--surface-2);border:1px solid var(--rule);border-radius:12px;padding:16px 16px 14px}
+.p .ph{text-align:center;margin-bottom:12px}
+.p .ph h3{font-size:14.5px;font-weight:600}
+.p .ph .k{font-family:var(--mono);font-size:9.5px;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-3);display:block;margin-bottom:3px}
+.p.g{border-color:var(--gate)} .p.g .ph .k{color:var(--gate)}
+.p.neg{border-color:var(--warn);background:var(--warn-soft)} .p.neg .ph .k{color:var(--warn)}
+.p.q{border-color:var(--accent)} .p.q .ph .k{color:var(--accent)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:8px}
+.grid.l{grid-template-columns:repeat(auto-fill,minmax(180px,1fr))}
+.gl{grid-column:1/-1;font-family:var(--mono);font-size:9.5px;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);padding:8px 2px 2px;border-top:1px solid var(--rule)}
+.gl:first-child{border-top:0;padding-top:0}
+.p.neg .gl{color:var(--warn)}
+.card{background:var(--surface);border:1px solid var(--rule-soft);border-radius:8px;padding:9px 10px;text-align:center;box-shadow:var(--shadow)}
+.card h4{font-size:12px;font-weight:600;line-height:1.3;letter-spacing:-0.005em}
+.card .chips{margin-top:6px;gap:4px}
+.card .c{font-size:9.5px;padding:2px 7px}
+.card .m{display:block;font-family:var(--mono);font-size:9.5px;color:var(--ink-3);margin-top:4px}
+.card.arrow h4 b{display:block;font-weight:500;color:var(--ink-3);font-size:11px;margin-top:3px}
+.card.arrow h4 b::before{content:"→ ";color:var(--gate)}
+
+/* stage bar */
+.bar{display:grid;width:100%;max-width:820px;gap:1px;background:var(--rule);border:1px solid var(--rule);border-radius:10px;overflow:hidden}
+.bar div{background:var(--surface);padding:10px 8px;text-align:center}
+.bar b{display:block;font-size:12.5px;font-weight:600;letter-spacing:-0.01em}
+.bar span{display:block;font-family:var(--mono);font-size:9.5px;color:var(--ink-3);margin-top:3px;line-height:1.4}
+.bar div.on{background:var(--accent-soft)} .bar div.on b{color:var(--accent)}
+.bar.grad{position:relative}
+.bar.grad::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:linear-gradient(90deg,#5AB1D6,#7CC08B,#E0C85A,#E39A4B,#D8654A)}
+
+/* loop */
+.loop{display:inline-flex;align-items:center;gap:8px;margin-top:12px;font-family:var(--mono);font-size:10.5px;color:var(--gate);border:1px dashed var(--gate);background:var(--gate-soft);border-radius:20px;padding:5px 12px}
+.loop::before{content:"↺";font-size:13px}
+.loops{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:12px}
+
+/* formula */
+.formula{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px;margin-top:8px}
+.formula .f{background:var(--surface);border:1px solid var(--rule);border-radius:20px;padding:8px 14px;font-family:var(--mono);font-size:11px;color:var(--ink-2);box-shadow:var(--shadow)}
+.formula .op{font-family:var(--mono);font-size:15px;color:var(--ink-3)}
+.formula .out{background:var(--ink);border-color:var(--ink);color:var(--ground);font-weight:600}
+
+.circ{width:112px;height:112px;border-radius:50%;background:var(--surface);border:1px solid var(--rule);box-shadow:var(--shadow);display:flex;align-items:center;justify-content:center;text-align:center;font-size:12px;font-weight:600;padding:10px;line-height:1.25}
+.circ.g{background:var(--gate-soft);border-color:var(--gate)}
+.circles{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;width:100%}
+.end{padding-block:40px 80px}
+
+@media (max-width:720px){
+  .row.two,.row.three,.row.four,.row.six{grid-template-columns:1fr 1fr}
+  .row::before,.row::after{left:25%;right:25%}
+  .n{min-width:0;width:100%}
+  .bar{grid-template-columns:1fr 1fr!important}
+}
+@media (max-width:440px){.row.two,.row.three,.row.four,.row.six{grid-template-columns:1fr}.row::before,.row::after{display:none}.row>.n::before,.row>.n::after{display:none}.bar{grid-template-columns:1fr!important}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+<header class="mast">
+  <h1>GTM Orchestration Map</h1>
+  <p>CRM in → one ranked queue per rep out</p>
+  <div class="key">
+    <span><i></i>process</span>
+    <span><i class="g"></i>gate</span>
+    <span><i class="l"></i>feedback loop</span>
+    <span><i class="ng"></i>negative signal</span>
+  </div>
+</header>
+
+<!-- 00 -->
+<section class="sec">
+  <div class="sec-h"><div class="k">00 / Foundation</div><h2>Data layer</h2></div>
+  <div class="flow">
+    <div class="p">
+      <div class="grid l">
+        <div class="card"><h4>Systems of record</h4><span class="m">CRM · warehouse · reverse ETL</span></div>
+        <div class="card"><h4>Identity &amp; dedupe</h4><span class="m">root domain · parent / child · precedence</span></div>
+        <div class="card"><h4>Taxonomies</h4><div class="chips"><span class="c x">loss_reason</span><span class="c x">abm_tier</span><span class="c x">awareness</span><span class="c x">buying_role</span></div></div>
+        <div class="card"><h4>Consent &amp; compliance</h4><span class="m">lawful basis · DNC · residency · ToS</span></div>
+      </div>
+    </div>
+    <div class="a"></div>
+  </div>
+</section>
+
+<!-- 01 -->
+<section class="sec">
+  <div class="sec-h"><div class="k">01 / Define the fit</div><h2>ICP model</h2></div>
+  <div class="flow">
+    <div class="n"><span class="k">CRM sync</span><h3>Closed Won + Closed Lost</h3><span class="s">trailing 8 quarters</span></div>
+    <div class="stem"></div>
+    <div class="row two">
+      <div class="n"><span class="k">Won</span><h3>Best-customer analysis</h3><span class="s">top ACV · NRR · time-to-value · AE + CSM interviews</span></div>
+      <div class="n"><span class="k">Lost</span><h3>Loss buckets</h3><div class="chips"><span class="c x">competitor</span><span class="c x">no decision</span><span class="c x">budget</span><span class="c x">disqualified</span></div></div>
+    </div>
+    <div class="a"></div>
+    <div class="n"><h3>ICP Model</h3><div class="chips"><span class="c x">firmographic</span><span class="c x">technographic</span><span class="c x">account fit</span><span class="c x">negative criteria</span></div></div>
+    <div class="a"></div>
+    <div class="n g"><span class="k">Gate</span><h3>Backtest</h3><span class="s">≥ 60% of wins in top 2 deciles</span></div>
+    <div class="loop">fail → ICP Model</div>
+    <div class="a"></div>
+  </div>
+</section>
+
+<!-- 02 -->
+<section class="sec">
+  <div class="sec-h"><div class="k">02 / Source the list</div><h2>TAM → target accounts</h2></div>
+  <div class="flow">
+    <div class="n"><h3>Broad TAM Map</h3><span class="s">segment × region</span></div>
+    <div class="stem"></div>
+    <div class="row two">
+      <div class="n"><h3>Firmographic fits</h3></div>
+      <div class="n"><h3>Lookalikes</h3><div class="chips"><span class="c">Clay</span></div></div>
+    </div>
+    <div class="a"></div>
+    <div class="n g"><span class="k">Gate A</span><h3>Suppression</h3><div class="chips"><span class="c x">customers</span><span class="c x">competitors</span><span class="c x">open opps</span><span class="c x">DNC</span><span class="c x">geo</span></div></div>
+    <div class="a"></div>
+    <div class="n"><h3>Account Research</h3><div class="chips"><span class="c">Clay</span></div></div>
+    <div class="a"></div>
+    <div class="n"><h3>Fit Scoring</h3><span class="s">deciles</span><div class="chips"><span class="c">Clay</span></div></div>
+    <div class="a"></div>
+    <div class="n g"><span class="k">Gate B</span><h3>Research QA</h3><span class="s">T1 100% · T2/T3 10% sample · &gt; 5% errors = stop</span></div>
+    <div class="a"></div>
+    <div class="n g"><span class="k">Gate C</span><h3>Capacity Tiering</h3><div class="chips"><span class="c t1">Tier 1 · 25–40 / AE</span><span class="c t2">Tier 2 · ~200 / SDR</span><span class="c t3">Tier 3 · queue</span></div></div>
+    <div class="a"></div>
+    <div class="n"><h3>Enriched Target Account List</h3></div>
+    <div class="a"></div>
+  </div>
+</section>
+
+<!-- 03 -->
+<section class="sec">
+  <div class="sec-h"><div class="k">03 / Map the committee</div><h2>Buying group</h2></div>
+  <div class="flow">
+    <div class="circles">
+      <div class="circ">Economic buyer</div><div class="circ">Decision maker</div><div class="circ">Champion</div><div class="circ">Influencer</div><div class="circ">Technical evaluator</div><div class="circ g">Blocker</div>
+    </div>
+    <div class="a"></div>
+    <div class="n"><h3>Contact Waterfall</h3><span class="s">email → mobile · verify · stop at first hit</span><div class="chips"><span class="c">Clay</span></div></div>
+    <div class="a"></div>
+    <div class="n g"><span class="k">Gate D</span><h3>Coverage Check</h3><div class="chips"><span class="c t1">T1 · 6+ contacts / 4 roles</span><span class="c t2">T2 · 3+ / 2</span><span class="c t3">T3 · 1</span></div></div>
+    <div class="loop">fail → Contact Waterfall</div>
+    <div class="a"></div>
+    <div class="n"><h3>CRM Upload</h3></div>
+    <div class="a"></div>
+  </div>
+</section>
+
+<!-- 04 -->
+<section class="sec">
+  <div class="sec-h"><div class="k">04 / Sense</div><h2>Signal tracking</h2></div>
+  <div class="flow">
+    <div class="stem"></div>
+    <div class="row three noend">
+      <div class="n"><h3>1st-Party</h3><span class="s">owned</span></div>
+      <div class="n"><h3>2nd-Party</h3><span class="s">earned</span></div>
+      <div class="n"><h3>3rd-Party</h3><span class="s">purchased</span></div>
+    </div>
+
+    <div class="p">
+      <div class="ph"><span class="k">1st-party</span><h3>Owned signals</h3></div>
+      <div class="grid">
+        <div class="gl">Web &amp; content</div>
+        <div class="card"><h4>High-intent pages</h4></div>
+        <div class="card"><h4>Docs &amp; interactive demo</h4></div>
+        <div class="card"><h4>ROI &amp; pricing tools</h4></div>
+        <div class="card"><h4>Trust centre request</h4></div>
+        <div class="card"><h4>Live chat</h4></div>
+        <div class="card"><h4>Content engagement</h4></div>
+        <div class="gl">Product</div>
+        <div class="card"><h4>Trial &amp; activation</h4></div>
+        <div class="card"><h4>Usage limit hit</h4></div>
+        <div class="card"><h4>Seat growth &amp; invites</h4></div>
+        <div class="card"><h4>Integration connected</h4></div>
+        <div class="gl">Conversations</div>
+        <div class="card"><h4>Inbound / meeting booked</h4></div>
+        <div class="card"><h4>Positive reply</h4></div>
+        <div class="card"><h4>Referral reply</h4></div>
+        <div class="card"><h4>Call connected</h4></div>
+        <div class="card"><h4>Email forwarded internally</h4></div>
+        <div class="gl">Events &amp; community</div>
+        <div class="card"><h4>Event attended</h4></div>
+        <div class="card"><h4>Webinar attended / Q&amp;A</h4></div>
+        <div class="card"><h4>Community activity</h4></div>
+        <div class="card"><h4>Newsletter engagement</h4></div>
+        <div class="gl">CRM history</div>
+        <div class="card"><h4>Customer referral</h4></div>
+        <div class="card"><h4>Ex-customer contact</h4></div>
+        <div class="card"><h4>Past closed-lost</h4></div>
+      </div>
+    </div>
+    <div class="a"></div>
+
+    <div class="p">
+      <div class="ph"><span class="k">2nd-party</span><h3>Earned signals</h3></div>
+      <div class="grid">
+        <div class="gl">Review sites &amp; marketplaces</div>
+        <div class="card"><h4>Competitor comparison</h4></div>
+        <div class="card"><h4>Category research</h4></div>
+        <div class="card"><h4>Analyst report</h4></div>
+        <div class="card"><h4>Marketplace install</h4></div>
+        <div class="gl">Partner &amp; network</div>
+        <div class="card"><h4>Partner referral</h4></div>
+        <div class="card"><h4>Partner overlap</h4></div>
+        <div class="card"><h4>Warm intro path</h4></div>
+        <div class="gl">People movement</div>
+        <div class="card"><h4>Champion changed job</h4></div>
+        <div class="card"><h4>Past user promoted</h4></div>
+        <div class="gl">Social &amp; community</div>
+        <div class="card"><h4>Community question</h4></div>
+        <div class="card"><h4>Exec posted on problem</h4></div>
+        <div class="card"><h4>Engaged your / competitor posts</h4></div>
+        <div class="card"><h4>GitHub activity</h4></div>
+        <div class="gl">Paid media</div>
+        <div class="card"><h4>Lead-gen form</h4></div>
+        <div class="card"><h4>Account ad engagement</h4></div>
+        <div class="card"><h4>Retargeting click</h4></div>
+      </div>
+    </div>
+    <div class="a"></div>
+
+    <div class="p">
+      <div class="ph"><span class="k">3rd-party</span><h3>Purchased signals</h3></div>
+      <div class="grid">
+        <div class="gl">Company events</div>
+        <div class="card"><h4>RFP / tender</h4></div>
+        <div class="card"><h4>Earnings-call mention</h4><div class="chips"><span class="c">Clay</span></div></div>
+        <div class="card"><h4>Funding round</h4></div>
+        <div class="card"><h4>M&amp;A</h4></div>
+        <div class="card"><h4>IPO filing</h4></div>
+        <div class="card"><h4>Launch · rebrand · pricing</h4><div class="chips"><span class="c">Clay</span></div></div>
+        <div class="gl">People changes</div>
+        <div class="card"><h4>Exec hire</h4><div class="chips"><span class="c">Clay</span></div></div>
+        <div class="card"><h4>Incumbent departed</h4></div>
+        <div class="card"><h4>Exec speaking / publishing</h4></div>
+        <div class="gl">Hiring</div>
+        <div class="card"><h4>Job names category / competitor</h4></div>
+        <div class="card"><h4>Role you enable</h4></div>
+        <div class="card"><h4>Hiring surge</h4></div>
+        <div class="gl">Technographic</div>
+        <div class="card"><h4>Competitor removed</h4></div>
+        <div class="card"><h4>Competitor renewal ≤ 120d</h4></div>
+        <div class="card"><h4>Complementary tool added</h4></div>
+        <div class="card"><h4>Competitor detected</h4></div>
+        <div class="gl">Intent data</div>
+        <div class="card"><h4>Competitor-brand surge</h4></div>
+        <div class="card"><h4>Topic surge</h4></div>
+        <div class="card"><h4>Branded search</h4></div>
+        <div class="card"><h4>AI-search citation</h4></div>
+        <div class="gl">Market &amp; competitor</div>
+        <div class="card"><h4>Competitor acquired / sunset</h4></div>
+        <div class="card"><h4>Competitor outage / breach</h4></div>
+        <div class="card"><h4>Competitor price change</h4></div>
+        <div class="card"><h4>Regulatory change</h4></div>
+        <div class="card"><h4>Budget cycle</h4></div>
+      </div>
+    </div>
+    <div class="a"></div>
+
+    <div class="p neg">
+      <div class="ph"><span class="k">Negative</span><h3>Subtract or block</h3></div>
+      <div class="grid">
+        <div class="card"><h4>Negative reply</h4></div>
+        <div class="card"><h4>Champion left, no replacement</h4></div>
+        <div class="card"><h4>Layoffs / hiring freeze</h4></div>
+        <div class="card"><h4>Unsubscribe / spam</h4></div>
+        <div class="card"><h4>Multi-year competitor contract</h4></div>
+        <div class="card"><h4>Distress · down-round</h4></div>
+        <div class="card"><h4>Acquired by competitor</h4></div>
+      </div>
+    </div>
+    <div class="a"></div>
+
+    <div class="p q">
+      <div class="ph"><span class="k">Qualifiers</span><h3>Multipliers</h3></div>
+      <div class="grid l">
+        <div class="card"><h4>Confidence</h4><span class="m">× 0.3 – 1.0</span></div>
+        <div class="card"><h4>Buying-group breadth</h4><span class="m">× 1.0 – 2.0</span></div>
+        <div class="card"><h4>Repetition</h4><span class="m">× 1.5</span></div>
+        <div class="card"><h4>Velocity · surge</h4><span class="m">fast lane</span></div>
+        <div class="card"><h4>Corroboration</h4><span class="m">× 1.25</span></div>
+        <div class="card"><h4>Coordinated evaluation</h4><span class="m">× 1.5</span></div>
+      </div>
+    </div>
+    <div class="a"></div>
+
+    <div class="n g"><span class="k">Gate E</span><h3>Account Score</h3><span class="s">Σ points × confidence × decay × breadth · 1st-party required</span></div>
+    <div class="a"></div>
+
+    <div class="bar grad" style="grid-template-columns:repeat(5,1fr)">
+      <div><b>Identified</b><span>0–9 · ads</span></div>
+      <div><b>Aware</b><span>10–29 · nurture</span></div>
+      <div><b>Interested</b><span>30–59 · sequence</span></div>
+      <div><b>Considering</b><span>60–99 · AE alert</span></div>
+      <div><b>Selecting</b><span>100+ · T1 override</span></div>
+    </div>
+    <div class="a"></div>
+
+    <div class="p">
+      <div class="ph"><span class="k">Trigger → Play</span><h3>Play library</h3></div>
+      <div class="grid l">
+        <div class="card arrow"><h4>Usage limit hit<b>upgrade call · 4h</b></h4></div>
+        <div class="card arrow"><h4>Pricing page ×3<b>direct outreach · 4h</b></h4></div>
+        <div class="card arrow"><h4>2+ roles in 48h<b>champion call · 24h</b></h4></div>
+        <div class="card arrow"><h4>Competitor comparison<b>comparison asset · 24h</b></h4></div>
+        <div class="card arrow"><h4>Champion moved<b>warm re-intro · 24h</b></h4></div>
+        <div class="card arrow"><h4>Competitor removed<b>displacement POV · 48h</b></h4></div>
+        <div class="card arrow"><h4>Exec hire<b>new-leader POV · 72h</b></h4></div>
+        <div class="card arrow"><h4>Negative reply<b>pause 90d</b></h4></div>
+      </div>
+    </div>
+    <div class="a"></div>
+  </div>
+</section>
+
+<!-- 05 -->
+<section class="sec">
+  <div class="sec-h"><div class="k">05 / Act</div><h2>Orchestration &amp; demand generation</h2></div>
+  <div class="flow">
+    <div class="stem"></div>
+    <div class="row four">
+      <div class="n"><h3>Custom Event Object</h3></div>
+      <div class="n"><h3>Lead Routing</h3><div class="chips"><span class="c">Clay</span></div></div>
+      <div class="n"><h3>CRM Task</h3></div>
+      <div class="n"><h3>Slack Alert</h3></div>
+    </div>
+    <div class="a"></div>
+    <div class="n g"><span class="k">Gate F</span><h3>Ownership &amp; Touch Caps</h3><span class="s">one owner · 4 / contact · 8 / account per week</span></div>
+    <div class="a"></div>
+
+    <div class="p">
+      <div class="ph"><span class="k">Surround sound</span><h3>One message · primary channel per role</h3></div>
+      <div class="grid l">
+        <div class="card arrow"><h4>Economic buyer<b>peer intro · exec letter</b></h4></div>
+        <div class="card arrow"><h4>Decision maker<b>sales outreach</b></h4></div>
+        <div class="card arrow"><h4>Champion<b>email + enablement</b></h4></div>
+        <div class="card arrow"><h4>Influencer<b>content + social</b></h4></div>
+        <div class="card arrow"><h4>Technical evaluator<b>docs + trust centre</b></h4></div>
+        <div class="card arrow"><h4>Blocker<b>via the champion</b></h4></div>
+      </div>
+    </div>
+    <div class="stem"></div>
+
+    <div class="row three noend">
+      <div class="n"><span class="k">Tier 1</span><h3>1 : 1</h3></div>
+      <div class="n"><span class="k">Tier 2</span><h3>1 : few</h3></div>
+      <div class="n"><span class="k">Tier 3</span><h3>1 : many</h3></div>
+    </div>
+
+    <div class="p">
+      <div class="grid">
+        <div class="gl">Tier 1 · 1:1</div>
+        <div class="card"><h4>Warm intros</h4></div>
+        <div class="card"><h4>Executive outreach</h4></div>
+        <div class="card"><h4>Gifting</h4></div>
+        <div class="card"><h4>Private events</h4></div>
+        <div class="gl">Tier 2 · 1:few</div>
+        <div class="card"><h4>Automated outbound</h4><div class="chips"><span class="c">Clay</span></div></div>
+        <div class="card"><h4>Parallel dialling</h4></div>
+        <div class="card"><h4>Event invites</h4></div>
+        <div class="card"><h4>Cluster ads</h4></div>
+        <div class="gl">Tier 3 · 1:many</div>
+        <div class="card"><h4>ABM ads</h4></div>
+        <div class="card"><h4>Social content</h4></div>
+        <div class="card"><h4>Newsletter · nurture</h4></div>
+        <div class="card"><h4>Public events</h4></div>
+      </div>
+    </div>
+    <div class="a"></div>
+
+    <div class="n g"><span class="k">Gate G</span><h3>Investment Allocation</h3><span class="s">AE hours T1 60 · T2 30 · T3 10 &nbsp;|&nbsp; ad spend by stage &nbsp;|&nbsp; gifting at Considering+</span></div>
+    <div class="a"></div>
+    <div class="n"><h3>Push Back to CRM</h3></div>
+    <div class="loop">L3 · no engagement 12 touches / 8 wks → nurture 90d → Fit Scoring</div>
+    <div class="a"></div>
+  </div>
+</section>
+
+<!-- 06 -->
+<section class="sec">
+  <div class="sec-h"><div class="k">06 / Convert</div><h2>Pipeline</h2></div>
+  <div class="flow">
+    <div class="n"><h3>Marketing-Qualified Account</h3><span class="s">Interested+ · 2+ contacts · top 4 deciles</span></div>
+    <div class="a"></div>
+    <div class="n g"><span class="k">Gate H</span><h3>Sales Acceptance</h3><span class="s">1 day · reason code required</span></div>
+    <div class="loop">reject → reason → Refit</div>
+    <div class="a"></div>
+    <div class="bar" style="grid-template-columns:repeat(5,1fr)">
+      <div><b>Discovery</b><span>2 threads</span></div>
+      <div><b>Validation</b><span>3 threads</span></div>
+      <div><b>Business case</b><span>3 threads</span></div>
+      <div><b>Proposal</b><span>4 threads</span></div>
+      <div class="on"><b>Commit</b><span>4 threads · MAP</span></div>
+    </div>
+    <div class="a"></div>
+    <div class="n"><h3>Win / Loss Capture</h3><div class="chips"><span class="c x">loss bucket</span><span class="c x">competitor</span><span class="c x">first signal</span><span class="c x">opening play</span></div></div>
+    <div class="loop">L2 · outcomes → CRM Sync · quarterly</div>
+    <div class="a"></div>
+  </div>
+</section>
+
+<!-- 07 -->
+<section class="sec">
+  <div class="sec-h"><div class="k">07 / Expand</div><h2>Post-sale</h2></div>
+  <div class="flow">
+    <div class="n"><h3>Onboarding</h3><span class="s">time-to-first-value</span></div>
+    <div class="a"></div>
+    <div class="n"><h3>Health Score</h3></div>
+    <div class="stem"></div>
+    <div class="row three noend">
+      <div class="n"><span class="k">Healthy</span><h3>Expansion TAL</h3><span class="s">whitespace · cross-sell · tiered</span></div>
+      <div class="n g"><span class="k">At risk</span><h3>Renewal Risk</h3><span class="s">champion left · usage ↓ · competitor detected</span></div>
+      <div class="n"><span class="k">Advocate</span><h3>Advocacy Engine</h3><span class="s">references · reviews · referrals</span></div>
+    </div>
+    <div class="loops">
+      <span class="loop">proof → Message layer</span>
+      <span class="loop">reviews · referrals → 2nd-party</span>
+      <span class="loop">departed champions → TAL</span>
+    </div>
+    <div class="a"></div>
+  </div>
+</section>
+
+<!-- 08 -->
+<section class="sec">
+  <div class="sec-h"><div class="k">08 / Measure &amp; learn</div><h2>Control loops</h2></div>
+  <div class="flow">
+    <div class="p">
+      <div class="ph"><span class="k">Metrics</span><h3>Reviewed together</h3></div>
+      <div class="grid">
+        <div class="card"><h4>TAL coverage</h4></div>
+        <div class="card"><h4>Engaged rate by tier</h4></div>
+        <div class="card"><h4>Pipeline / 100 accounts</h4></div>
+        <div class="card"><h4>Win rate by entry stage</h4></div>
+        <div class="card"><h4>Cost per engaged account</h4></div>
+        <div class="card"><h4>Signal precision</h4></div>
+      </div>
+    </div>
+    <div class="stem"></div>
+    <div class="row four noend">
+      <div class="n g"><span class="k">L1 · nightly</span><h3>Re-tier</h3><span class="s">→ Capacity Tiering</span></div>
+      <div class="n g"><span class="k">L2 · quarterly</span><h3>Refit</h3><span class="s">→ ICP Model · weights</span></div>
+      <div class="n g"><span class="k">L3 · continuous</span><h3>Recycle</h3><span class="s">→ Fit Scoring</span></div>
+      <div class="n g"><span class="k">L4 · quarterly</span><h3>Learn</h3><span class="s">→ Message · ICP · product</span></div>
+    </div>
+    <div class="bar" style="grid-template-columns:repeat(4,1fr);margin-top:8px">
+      <div><b>Weekly</b><span>pipeline council</span></div>
+      <div><b>Monthly</b><span>signal review</span></div>
+      <div><b>Quarterly</b><span>refit</span></div>
+      <div><b>Annually</b><span>territory redesign</span></div>
+    </div>
+    <div class="a"></div>
+  </div>
+</section>
+
+<!-- lifecycle + final -->
+<section class="sec end">
+  <div class="flow">
+    <div class="bar" style="grid-template-columns:repeat(7,1fr)">
+      <div><b>Awareness</b></div><div><b>Education</b></div><div><b>Selection</b></div><div class="on"><b>Commit</b></div><div><b>Onboarding</b></div><div><b>Adoption</b></div><div><b>Expansion</b></div>
+    </div>
+    <div class="a lbl"><span>continuous learning</span></div>
+    <div class="n wide term"><span class="k" style="color:var(--ink-3)">Final output</span><h3>Prioritised queue per rep · nightly</h3></div>
+    <div class="formula">
+      <span class="f">accounts mapped</span><span class="op">+</span>
+      <span class="f">fit score</span><span class="op">+</span>
+      <span class="f">capacity tier</span><span class="op">+</span>
+      <span class="f">committee map</span><span class="op">+</span>
+      <span class="f">signals × confidence × breadth</span><span class="op">+</span>
+      <span class="f">awareness stage</span><span class="op">=</span>
+      <span class="f out">prioritisation</span>
+    </div>
+  </div>
+</section>
+
+</div>
+
+</body>
+</html>
