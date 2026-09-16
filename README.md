@@ -44,6 +44,11 @@ assets as base64 in a JSON manifest. Two things are worth knowing before editing
 
 ## Mobile
 
+- The navbar is sticky at the top of the viewport on every section. It lives in
+  the screen wrapper, **not** inside `<section id="top">` — the hero sets
+  `overflow:hidden`, which traps `position:sticky`, and sticky is bounded by its
+  parent's box regardless. The hero carries `margin-top:-72px; padding-top:72px`
+  so its gradient still starts at y=0 with the header overlaying it.
 - The navbar collapses to a hamburger drawer under 860px, with Escape-to-close,
   background scroll lock and 48px minimum tap targets.
 - Two decorative diagrams use fixed pixel coordinates and would otherwise widen

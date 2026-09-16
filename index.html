@@ -1952,15 +1952,15 @@ img { max-width: 100% }
 </helmet>
 
 <div data-screen-label="Home" style="font-family:'Public Sans',sans-serif;color:#2A2F3F;background:#fff">
+<div style="position:sticky;top:0;z-index:50">
+<x-import component-from-global-scope="Plutus21DesignSystem_3e7813.Navbar" logo-src="{{ logoSrc }}" logo-alt="Plutus21" tone="dark" items="{{ navItems }}" on-navigate="{{ goTo }}" hint-size="100%,72px"></x-import>
+</div>
 
 <!-- Hero -->
-<section id="top" style="position:relative;overflow:hidden;background:radial-gradient(72% 58% at 50% 0%, #00026E, #000A47 32%, #01021E 70%, #010119);color:#fff">
+<section id="top" style="position:relative;overflow:hidden;margin-top:-72px;padding-top:72px;background:radial-gradient(72% 58% at 50% 0%, #00026E, #000A47 32%, #01021E 70%, #010119);color:#fff">
 <sc-if value="{{ gridLines }}" hint-placeholder-val="{{ true }}">
 <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.07) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.07) 1px, transparent 1px);background-size:64px 64px;mask-image:radial-gradient(80% 70% at 50% 28%, #000 30%, transparent 100%);-webkit-mask-image:radial-gradient(80% 70% at 50% 28%, #000 30%, transparent 100%);pointer-events:none"></div>
 </sc-if>
-<div style="position:relative;z-index:2">
-<x-import component-from-global-scope="Plutus21DesignSystem_3e7813.Navbar" logo-src="{{ logoSrc }}" logo-alt="Plutus21" tone="dark" items="{{ navItems }}" on-navigate="{{ goTo }}" hint-size="100%,72px"></x-import>
-</div>
 <div style="position:relative;max-width:1200px;margin:0 auto;padding:48px 32px 56px;display:flex;flex-direction:column;gap:40px">
 <div style="display:flex;flex-direction:column;gap:24px;align-items:flex-start">
 <h1 style="font-family:'Manrope',sans-serif;font-weight:700;font-size:clamp(32px,4.4vw,54px);line-height:1.04;letter-spacing:-0.04em;margin:0;color:#fff;max-width:16ch;text-wrap:pretty">GTM <span style="color:#BDD5FF">engineering</span> built around you</h1>
@@ -2339,8 +2339,12 @@ class Component extends DCLogic {
       goTo: (id) => {
         const el = document.getElementById(id);
         if (!el) return;
-        const top = el.getBoundingClientRect().top + window.scrollY - 72;
-        window.scrollTo({ top, behavior: 'smooth' });
+        // Measure the sticky header rather than assuming 72px: its real height
+        // is 73px with the bottom border, which left sections 1px underneath.
+        const header = document.querySelector('header');
+        const offset = header ? header.getBoundingClientRect().height : 72;
+        const top = el.getBoundingClientRect().top + window.scrollY - offset - 4;
+        window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
       },
     };
   }

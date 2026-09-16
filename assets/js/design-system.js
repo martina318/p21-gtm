@@ -2189,7 +2189,9 @@ function Navbar({
   return React.createElement('header', {
     style: {
       position: 'relative', zIndex: 20,
-      background: inverse ? 'rgba(1,1,25,.72)' : 'rgba(255,255,255,.86)',
+      // Opaque enough to stay legible now that the header is sticky and travels
+      // over the white sections, not just the dark hero.
+      background: inverse ? 'rgba(1,1,25,.94)' : 'rgba(255,255,255,.96)',
       backdropFilter: 'blur(var(--blur-glass))',
       WebkitBackdropFilter: 'blur(var(--blur-glass))',
       borderBottom: `1px solid ${inverse ? 'var(--border-on-dark)' : 'var(--border-subtle)'}`,
